@@ -166,49 +166,113 @@ layout = html.Div([
         html.Div(id='components-demo-output')
     ], className="card"),
     
-    # Bootstrap Components
+    # Framework Comparison Section - Title
     html.Div([
-        html.H2("Bootstrapコンポーネント", className="card-title"),
-        html.P("これらのコンポーネントはdash-bootstrap-componentsライブラリを必要とします。"),
+        html.H2("UIフレームワーク比較", className="card-title"),
+        html.P("同じUIを異なるスタイルのBootstrapで実装した比較です。"),
         
+        # Two-column layout for comparison
         html.Div([
-            dbc.Row([
-                dbc.Col([
-                    dbc.Card([
-                        dbc.CardHeader("カードタイトル"),
-                        dbc.CardBody([
-                            html.H5("カード見出し", className="card-title"),
-                            html.P("これはDashでのBootstrapカードコンポーネントのデモです。", className="card-text"),
-                            dbc.Button("クリック", color="primary", id="card-button")
-                        ])
-                    ])
-                ], width=6),
+            # Left column - Bootstrap
+            html.Div([
+                html.H3("Bootstrap実装", style={"textAlign": "center"}),
+                html.Hr(),
                 
-                dbc.Col([
-                    dbc.Alert("これはプライマリアラートです", color="primary"),
-                    dbc.Alert("これはセカンダリアラートです", color="secondary"),
-                    dbc.Alert("これは成功アラートです", color="success"),
-                    dbc.Progress(value=75, style={"height": "30px", "marginBottom": "10px"}),
-                    dbc.ButtonGroup([
-                        dbc.Button("左", color="primary"),
-                        dbc.Button("中央", color="secondary"),
-                        dbc.Button("右", color="success")
+                # Card with title, text and button
+                dbc.Card([
+                    dbc.CardHeader("カードの例"),
+                    dbc.CardBody([
+                        html.H5("カードタイトル", className="card-title"),
+                        html.P("これはカードの内容です。Bootstrap UIを使っています。", className="card-text"),
+                        dbc.Button("ボタン", color="primary", id="bs-card-button")
                     ])
-                ], width=6)
-            ]),
+                ], className="mb-4"),
+                
+                # Form elements
+                dbc.Form([
+                    dbc.Row([
+                        dbc.Col([
+                            dbc.Label("テキスト入力"),
+                            dbc.Input(type="text", placeholder="テキストを入力...", id="bs-text-input")
+                        ], className="mb-3"),
+                    ]),
+                    
+                    dbc.Row([
+                        dbc.Col([
+                            dbc.Label("セレクト"),
+                            dbc.Select(
+                                id="bs-select",
+                                options=[
+                                    {"label": "オプション 1", "value": "1"},
+                                    {"label": "オプション 2", "value": "2"},
+                                    {"label": "オプション 3", "value": "3"},
+                                ],
+                                value="1"
+                            )
+                        ], className="mb-3"),
+                    ]),
+                    
+                    dbc.Row([
+                        dbc.Col([
+                            dbc.Label("チェックボックス"),
+                            dbc.Checkbox(id="bs-checkbox", label="同意する", value=False)
+                        ], className="mb-3"),
+                    ]),
+                    
+                    dbc.Button("送信", color="success", id="bs-submit")
+                ])
+            ], style={"width": "48%", "float": "left"}),
             
-            html.Div(style={"height": "20px"}),
-            
-            dbc.Row([
-                dbc.Col([
-                    dbc.Tabs([
-                        dbc.Tab(html.P("これはタブ1の内容です"), label="タブ 1"),
-                        dbc.Tab(html.P("これはタブ2の内容です"), label="タブ 2"),
-                        dbc.Tab(html.P("これはタブ3の内容です"), label="タブ 3")
+            # Right column - Dash Bootstrap
+            html.Div([
+                html.H3("Dash Bootstrap実装（右側）", style={"textAlign": "center"}),
+                html.Hr(),
+                
+                # Card with title, text and button
+                dbc.Card([
+                    dbc.CardHeader("カードの例"),
+                    dbc.CardBody([
+                        html.H5("カードタイトル", className="card-title"),
+                        html.P("これはカードの内容です。Dash Bootstrap UIを使っています。", className="card-text"),
+                        dbc.Button("ボタン", color="primary", id="bs-card-button-2")
                     ])
-                ], width=12)
-            ])
-        ])
+                ], className="mb-4"),
+                
+                # Form elements
+                dbc.Form([
+                    dbc.Row([
+                        dbc.Col([
+                            dbc.Label("テキスト入力"),
+                            dbc.Input(type="text", placeholder="テキストを入力...", id="bs-text-input-2")
+                        ], className="mb-3"),
+                    ]),
+                    
+                    dbc.Row([
+                        dbc.Col([
+                            dbc.Label("セレクト"),
+                            dbc.Select(
+                                id="bs-select-2",
+                                options=[
+                                    {"label": "オプション 1", "value": "1"},
+                                    {"label": "オプション 2", "value": "2"},
+                                    {"label": "オプション 3", "value": "3"},
+                                ],
+                                value="1"
+                            )
+                        ], className="mb-3"),
+                    ]),
+                    
+                    dbc.Row([
+                        dbc.Col([
+                            dbc.Label("チェックボックス"),
+                            dbc.Checkbox(id="bs-checkbox-2", label="同意する", value=False)
+                        ], className="mb-3"),
+                    ]),
+                    
+                    dbc.Button("送信", color="success", id="bs-submit-2")
+                ])
+            ], style={"width": "48%", "float": "right"})
+        ], style={"display": "flex", "justifyContent": "space-between"})
     ], className="card")
 ])
 
@@ -233,3 +297,27 @@ def update_demo_output(n_clicks, text_value, dropdown_value, slider_value, check
         html.P(f"スライダー値: {slider_value}"),
         html.P(f"チェックリスト選択: {checklist_value}")
     ])
+
+# Callback for Bootstrap form submission
+@callback(
+    Output('bs-submit', 'children'),
+    Input('bs-submit', 'n_clicks'),
+    State('bs-text-input', 'value'),
+    State('bs-select', 'value'),
+    State('bs-checkbox', 'value'),
+    prevent_initial_call=True
+)
+def bs_form_submit(n_clicks, text, select, checkbox):
+    return f"送信済み ({n_clicks})"
+
+# Callback for Bootstrap form submission (right side)
+@callback(
+    Output('bs-submit-2', 'children'),
+    Input('bs-submit-2', 'n_clicks'),
+    State('bs-text-input-2', 'value'),
+    State('bs-select-2', 'value'),
+    State('bs-checkbox-2', 'value'),
+    prevent_initial_call=True
+)
+def bs_form_submit_2(n_clicks, text, select, checkbox):
+    return f"送信済み ({n_clicks})"
